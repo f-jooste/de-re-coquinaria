@@ -1,0 +1,18 @@
+---
+import ToolchainCheck from '../components/ToolchainCheck';
+import { withBase } from '../lib/base-path';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>De Re Coquinaria</title>
+  </head>
+  <body>
+    <h1>De Re Coquinaria</h1>
+    <p>Walking skeleton: this page exists to prove commit-to-browser deploy works.</p>
+    <p><a href={withBase('/')}>Link to itself, generated through the base-path helper</a></p>
+    <ToolchainCheck client:load />
+  </body>
+</html>
