@@ -1,0 +1,43 @@
+# Agent scratch space
+.scratch/
+
+# Local-only docs, not published
+docs/
+AGENTS.md
+CONTEXT.md
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Astro build output and cache
+dist/
+.astro/
+.output/
+
+# Generated at build time from Supabase (nightly build artefacts)
+public/search-index.json
+
+# Secrets: Supabase URL/anon key, never committed
+.env
+.env.*
+!.env.example
+
+# Supabase local instance (RLS test seam)
+supabase/.branches/
+supabase/.temp/
+supabase/logs/
+
+# Test and typecheck output
+coverage/
+*.tsbuildinfo
+
+# Editor and OS cruft
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
