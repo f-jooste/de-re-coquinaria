@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { recipeSource } from '../../lib/recipe-source-instance';
+import { CATEGORIES, categoryName } from '../../lib/categories';
+import { withBase } from '../../lib/base-path';
+import { placeholderTile } from '../../lib/placeholder-tile';
+import { parseIngredientLines } from '../../lib/ingredient-lines';
+import { buildRecipeRoutes } from '../../lib/recipe-routes';
+import type { Recipe } from '../../lib/recipe-source';
+
+export function getStaticPaths() {
+  return buildRecipeRoutes(recipeSource);
+}
+
+interface Props {
+  recipe: Recipe;
+}
+
+const { recipe } = Astro.props;
+
+const breadcrumbCategorySlug = CATEGORIES.find((category) => recipe.categories.includes(category.slug))?.slug;
+const tile = placeholderTile(recipe.title);
+const ingredientLines = parseIngredientLines(recipe.ingredients);
+const hasTimesOrServings = recipe.prepMinutes !== null || recipe.cookMinutes !== null || recipe.servings !== null;
+---
+
+<BaseLayout title={`${recipe.title} · De Re Coquinaria`}>
+  <div class="wrap recipe-page">
+    <div class="recipe-body">
+      <div class="hero-recipe">
+        <div class="recipe-header">
+          <nav aria-label="Breadcrumb" class="hint">
+            <a href={withBase('/')}>Home</a>
+            {breadcrumbCategorySlug && (
+              <>
+                {' / '}
+                <a href={withBase(`/categories/${breadcrumbCategorySlug}/`)}>{categoryName(breadcrumbCategorySlug)}</a>
+              </>
+            )}
+            {' / '}{recipe.title}
+          </nav>
+          <h1 class="recipe-title">{recipe.title}</h1>
+
+          {hasTimesOrServings && (
+            <div class="recipe-meta">
+              {recipe.prepMinutes !== null && (
+                <div><span class="hint">Prep</span> <strong>{recipe.prepMinutes} min</strong></div>
+              )}
+              {recipe.cookMinutes !== null && (
+                <div><span class="hint">Cook</span> <strong>{recipe.cookMinutes} min</strong></div>
+              )}
+              {recipe.servings !== null && (
+                <div><span class="hint">Serves</span> <strong>{recipe.servings}</strong></div>
+              )}
+            </div>
+          )}
+
+          <div class="recipe-taxonomy">
+            <span class="hint recipe-taxonomy-label">Category</span>
+            {recipe.categories.map((slug) => (
+              <a class="chip chip-lg" href={withBase(`/categories/${slug}/`)}>{categoryName(slug)}</a>
+            ))}
+            {recipe.tags.length > 0 && (
+              <>
+                <span class="hint recipe-taxonomy-label recipe-taxonomy-label-tags">Tags</span>
+                {recipe.tags.map((tag) => (
+                  <a class="chip chip-lg" href={withBase(`/tags/${tag}/`)}>{tag}</a>
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+
+        <div class="recipe-photo" style={`background: ${tile.bg}; color: ${tile.fg}`}>
+          {tile.initial}
+        </div>
+      </div>
+
+      <hr class="rule" />
+
+      <div class="split">
+        <div>
+          <h2 class="recipe-section-title">Ingredients</h2>
+          <ul class="ing">
+            {ingredientLines.map((line) => (
+              <li class={line.heading ? 'ing-h' : undefined}>{line.text}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="recipe-section-title">Steps</h2>
+          <ol class="steps">
+            {recipe.steps.map((step) => (
+              <li><span>{step}</span></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      {recipe.notes && (
+        <div class="recipe-notes">
+          <div class="sec-label recipe-notes-label">Notes</div>
+          <p class="recipe-notes-text">{recipe.notes}</p>
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .recipe-page { padding: 64px 0 }
+  .recipe-body { display: flex; flex-direction: column; gap: 32px }
+  .recipe-header { display: flex; flex-direction: column; gap: 20px; min-width: 0 }
+  .recipe-title { font-size: 52px; line-height: 1.08 }
+  .recipe-meta { display: flex; gap: 28px; flex-wrap: wrap; align-items: center }
+  .recipe-taxonomy { display: flex; gap: 8px; flex-wrap: wrap; align-items: center }
+  .recipe-taxonomy-label { margin-right: 4px }
+  .recipe-taxonomy-label-tags { margin: 0 4px 0 12px }
+  .recipe-photo {
+    align-self: start;
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Young Serif', Georgia, serif;
+    font-size: 140px;
+  }
+  .recipe-section-title { font-size: 30px; margin-bottom: 20px }
+  .recipe-notes {
+    background: var(--color-notes-bg);
+    border-radius: 20px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 760px;
+  }
+  .recipe-notes-label { color: var(--color-notes-ink) }
+  .recipe-notes-text { font-size: 18px }
+</style>

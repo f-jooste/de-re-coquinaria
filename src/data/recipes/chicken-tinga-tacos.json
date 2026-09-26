@@ -1,0 +1,34 @@
+{
+  "slug": "chicken-tinga-tacos",
+  "title": "Chicken tinga tacos",
+  "ingredients": [
+    "For the chicken:",
+    "600 g boneless chicken thighs",
+    "1 tsp salt",
+    "2 bay leaves",
+    "For the sauce:",
+    "3 ripe tomatoes, quartered",
+    "1 white onion, roughly chopped",
+    "2 chipotles in adobo, plus 1 tbsp of the sauce",
+    "To serve:",
+    "12 small corn tortillas",
+    "Coriander and lime wedges"
+  ],
+  "steps": [
+    "Simmer the chicken with the salt and bay leaves in just enough water to cover, about 20 minutes. Shred it and keep 1 cup of the broth.",
+    "Blend the tomatoes, onion, chipotles and adobo sauce until smooth.",
+    "Fry the sauce in a wide pan for 8 minutes until it darkens, then add the chicken and enough broth to loosen it. Cook 10 more minutes.",
+    "Warm the tortillas, fill, and finish with coriander and a squeeze of lime."
+  ],
+  "prepMinutes": 15,
+  "cookMinutes": 30,
+  "servings": 4,
+  "notes": "Use one chipotle for mild, three for properly spicy. The filling keeps for three days and gets better overnight.",
+  "heroPath": null,
+  "status": "published",
+  "archivedAt": null,
+  "createdAt": "2026-01-05T12:00:00.000Z",
+  "updatedAt": "2026-01-05T12:00:00.000Z",
+  "categories": ["dinner"],
+  "tags": ["mexican", "chicken", "weeknight"]
+}

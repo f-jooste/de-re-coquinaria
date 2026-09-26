@@ -1,7 +1,9 @@
-import { defineConfig } from 'vitest/config';
+/// <reference types="vitest/config" />
+import { getViteConfig } from 'astro/config';
 
-export default defineConfig({
+// getViteConfig (not defineConfig) so Astro's Vite plugin is active, letting the Container API render .astro files in tests.
+export default getViteConfig({
   test: {
-    passWithNoTests: true, // no tests yet, ticket 02 adds them; else empty suite fails CI
+    passWithNoTests: true,
   },
 });

@@ -1,0 +1,31 @@
+{
+  "slug": "miso-salmon",
+  "title": "Miso salmon",
+  "ingredients": [
+    "2 salmon fillets, skin on",
+    "2 tbsp white miso paste",
+    "1 tbsp mirin",
+    "1 tbsp soy sauce",
+    "1 tsp rice vinegar",
+    "1 tsp neutral oil",
+    "Steamed rice and greens, to serve"
+  ],
+  "steps": [
+    "Whisk the miso, mirin, soy sauce and rice vinegar together in a small bowl.",
+    "Pat the salmon dry and coat both sides in the marinade. Leave for at least 10 minutes.",
+    "Heat the oil in a non-stick pan over medium-high heat and sear the salmon skin-side down for 4 minutes.",
+    "Flip and cook for 2-3 minutes more, brushing with any remaining marinade, until just cooked through.",
+    "Serve immediately over rice with steamed greens."
+  ],
+  "prepMinutes": null,
+  "cookMinutes": null,
+  "servings": null,
+  "notes": null,
+  "heroPath": null,
+  "status": "published",
+  "archivedAt": null,
+  "createdAt": "2026-02-10T09:00:00.000Z",
+  "updatedAt": "2026-02-10T09:00:00.000Z",
+  "categories": ["dinner"],
+  "tags": ["fish", "weeknight", "quick"]
+}
