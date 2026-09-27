@@ -1,0 +1,31 @@
+{
+  "slug": "crispy-paprika-chickpeas",
+  "title": "Crispy paprika chickpeas",
+  "ingredients": [
+    "2 x 400 g tins chickpeas, drained and rinsed",
+    "2 tbsp olive oil",
+    "1 tsp smoked paprika",
+    "1/2 tsp garlic powder",
+    "1/2 tsp salt",
+    "A pinch of cayenne pepper (optional)"
+  ],
+  "steps": [
+    "Heat the oven to 200°C (fan 180°C).",
+    "Pat the chickpeas completely dry with a clean tea towel. The drier they are, the crispier they get.",
+    "Toss the chickpeas with the olive oil, smoked paprika, garlic powder, salt and cayenne until evenly coated.",
+    "Spread them in a single layer on a baking tray.",
+    "Roast for 25-30 minutes, shaking the tray halfway through, until deeply golden and crisp.",
+    "Let them cool for a few minutes on the tray. They crisp up further as they cool. Serve warm or at room temperature."
+  ],
+  "prepMinutes": 5,
+  "cookMinutes": 25,
+  "servings": 4,
+  "notes": null,
+  "heroPath": null,
+  "status": "published",
+  "archivedAt": null,
+  "createdAt": "2026-02-20T14:00:00.000Z",
+  "updatedAt": "2026-02-20T14:00:00.000Z",
+  "categories": ["snacks-and-sides", "lunch"],
+  "tags": ["vegetarian", "quick"]
+}

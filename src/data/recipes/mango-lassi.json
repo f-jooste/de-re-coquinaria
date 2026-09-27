@@ -1,0 +1,31 @@
+{
+  "slug": "mango-lassi",
+  "title": "Mango lassi",
+  "ingredients": [
+    "2 ripe mangoes, peeled and chopped (or 2 cups frozen mango chunks)",
+    "1 cup plain yoghurt",
+    "1/2 cup cold milk",
+    "2 tbsp honey, or to taste",
+    "1/4 tsp ground cardamom",
+    "A handful of ice cubes",
+    "Chopped pistachios, to serve (optional)"
+  ],
+  "steps": [
+    "Combine the mango, yoghurt, milk, honey and cardamom in a blender.",
+    "Blend until completely smooth, about 30 seconds.",
+    "Taste and adjust the honey depending on how ripe the mango is.",
+    "Add the ice and blend again until frothy and well chilled.",
+    "Pour into glasses and top with pistachios if using."
+  ],
+  "prepMinutes": 5,
+  "cookMinutes": null,
+  "servings": 2,
+  "notes": "Frozen mango skips the ice and blends up thicker, which is nice for a rushed breakfast.",
+  "heroPath": null,
+  "status": "published",
+  "archivedAt": null,
+  "createdAt": "2026-01-20T08:30:00.000Z",
+  "updatedAt": "2026-01-20T08:30:00.000Z",
+  "categories": ["drinks", "breakfast"],
+  "tags": ["sweet", "yoghurt"]
+}

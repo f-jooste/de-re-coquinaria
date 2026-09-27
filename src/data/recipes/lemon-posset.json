@@ -1,0 +1,30 @@
+{
+  "slug": "lemon-posset",
+  "title": "Lemon posset",
+  "ingredients": [
+    "600 ml double cream",
+    "150 g caster sugar",
+    "Zest of 2 lemons",
+    "100 ml fresh lemon juice (about 3 lemons)",
+    "Berries or shortbread, to serve"
+  ],
+  "steps": [
+    "Put the cream, sugar and lemon zest in a wide saucepan and bring to a gentle boil over medium heat, stirring occasionally.",
+    "Once boiling, simmer for exactly 3 minutes, stirring constantly so it doesn't catch on the bottom of the pan.",
+    "Take off the heat and stir in the lemon juice. The mixture will thicken slightly as it cools.",
+    "Strain through a sieve into a jug to catch the zest, then pour into six small glasses or ramekins.",
+    "Chill for at least 4 hours, ideally overnight, until fully set.",
+    "Serve cold, topped with a few berries or with shortbread on the side."
+  ],
+  "prepMinutes": 15,
+  "cookMinutes": 5,
+  "servings": 6,
+  "notes": "Sets fully in the fridge. Don't be tempted to freeze it to speed things up, the texture goes grainy.",
+  "heroPath": null,
+  "status": "published",
+  "archivedAt": null,
+  "createdAt": "2026-02-01T18:00:00.000Z",
+  "updatedAt": "2026-02-01T18:00:00.000Z",
+  "categories": ["desserts"],
+  "tags": ["make-ahead", "citrus"]
+}

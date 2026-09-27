@@ -11,7 +11,9 @@ describe('JsonRecipeSource', () => {
 
   it('orders the shipped Recipes newest-first', () => {
     const source = new JsonRecipeSource();
-    expect(source.getAllRecipes().map((r) => r.slug)).toEqual(['miso-salmon', 'chicken-tinga-tacos']);
+    const createdAts = source.getAllRecipes().map((r) => r.createdAt);
+    const sorted = [...createdAts].sort((a, b) => b.localeCompare(a));
+    expect(createdAts).toEqual(sorted);
   });
 
   it('finds a Recipe by its Slug', () => {
