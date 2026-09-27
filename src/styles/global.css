@@ -34,6 +34,7 @@ a.chip:hover { background: #E4D8C2; color: var(--color-ink) }
 .chip-lg input { position: absolute; opacity: 0; width: 1px; height: 1px }
 .card { display: block; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 16px; overflow: hidden; text-decoration: none; color: var(--color-ink) }
 .card:hover { border-color: var(--color-accent); color: var(--color-ink) }
+.card[hidden] { display: none }
 .tile { display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: var(--color-ink); border-radius: 20px; padding: 20px; min-height: 132px; box-sizing: border-box; border: 1px solid rgba(43, 33, 28, .08) }
 .tile:hover { border-color: var(--color-ink); color: var(--color-ink) }
 .input { width: 100%; box-sizing: border-box; min-height: 48px; border: 1px solid #B9AA92; border-radius: 12px; padding: 0 14px; font: 400 17px 'Hanken Grotesk', sans-serif; background: var(--color-surface); color: var(--color-ink) }

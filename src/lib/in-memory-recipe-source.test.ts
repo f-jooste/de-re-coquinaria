@@ -45,6 +45,13 @@ describe('InMemoryRecipeSource', () => {
     expect(source.getRecipesByTag('other')).toEqual([]);
   });
 
+  it('matches a Tag by its lowercase canonical form regardless of stored or queried casing', () => {
+    const tagged = makeRecipe({ slug: 'tagged', tags: ['Mexican'] });
+    const source = new InMemoryRecipeSource([tagged]);
+    expect(source.getRecipesByTag('mexican').map((r) => r.slug)).toEqual(['tagged']);
+    expect(source.getRecipesByTag('MEXICAN').map((r) => r.slug)).toEqual(['tagged']);
+  });
+
   it('returns all six Categories with counts, including a zero count', () => {
     const dinnerRecipe = makeRecipe({ slug: 'dinner-only', categories: ['dinner'] });
     const source = new InMemoryRecipeSource([dinnerRecipe]);

@@ -32,8 +32,13 @@ describe('Recipe page', () => {
     expect(html).toMatch(/>Dinner<\/a>/);
     expect(html).toContain('Simmer the chicken.');
     expect(html).toContain('3 ripe tomatoes, quartered');
-    expect(html).toContain('mexican');
-    expect(html).toContain('chicken');
+    expect(html).toContain('Mexican');
+    expect(html).toContain('Chicken');
+  });
+
+  it('links a Tag chip to its canonical lowercase Tag Slug and shows its display name', async () => {
+    const { html } = await renderRecipe({ tags: ['Make-Ahead'] });
+    expect(html).toMatch(/<a class="chip chip-lg" href="[^"]*\/tags\/make-ahead\/"[^>]*>Make Ahead<\/a>/);
   });
 
   it('renders a colon-suffixed Ingredient line as a heading', async () => {

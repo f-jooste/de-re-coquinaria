@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import { recipeSource } from '../../lib/recipe-source-instance';
+import { buildTagRoutes } from '../../lib/tag-routes';
+import { withBase } from '../../lib/base-path';
+import type { Recipe } from '../../lib/recipe-source';
+import type { TagWithName } from '../../lib/tags';
+
+export function getStaticPaths() {
+  return buildTagRoutes(recipeSource);
+}
+
+interface Props {
+  tag: TagWithName;
+  recipes: Recipe[];
+}
+
+const { tag, recipes } = Astro.props;
+---
+
+<BaseLayout title={`${tag.name} · De Re Coquinaria`}>
+  <div class="wrap tag-page">
+    <nav aria-label="Breadcrumb" class="hint">
+      <a href={withBase('/')}>Home</a> / {tag.name}
+    </nav>
+    <div class="tag-header">
+      <h1 class="tag-title">{tag.name}</h1>
+      <span class="hint">{recipes.length} recipes · newest first</span>
+    </div>
+
+    <div class="g3">
+      {recipes.map((recipe) => <RecipeCard recipe={recipe} showCategories />)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .tag-page { padding: 64px 0; display: flex; flex-direction: column; gap: 24px }
+  .tag-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap }
+  .tag-title { font-size: 44px }
+</style>

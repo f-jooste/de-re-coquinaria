@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
 import { recipeSource } from '../../lib/recipe-source-instance';
 import { buildCategoryRoutes } from '../../lib/category-routes';
 import { withBase } from '../../lib/base-path';
-import { placeholderTile } from '../../lib/placeholder-tile';
+import { distinctTags } from '../../lib/tags';
 import type { CategoryWithCount, Recipe } from '../../lib/recipe-source';
 
 export function getStaticPaths() {
@@ -16,15 +17,7 @@ interface Props {
 }
 
 const { category, recipes } = Astro.props;
-
-// The design file's card meta line: prep/cook time and servings, omitted entirely when none are recorded.
-function recipeMeta(recipe: Recipe): string | null {
-  const parts: string[] = [];
-  if (recipe.prepMinutes !== null) parts.push(`${recipe.prepMinutes} min prep`);
-  if (recipe.cookMinutes !== null) parts.push(`${recipe.cookMinutes} min cook`);
-  if (recipe.servings !== null) parts.push(`Serves ${recipe.servings}`);
-  return parts.length > 0 ? parts.join(' · ') : null;
-}
+const tags = distinctTags(recipes);
 ---
 
 <BaseLayout title={`${category.name} · De Re Coquinaria`}>
@@ -40,26 +33,22 @@ function recipeMeta(recipe: Recipe): string | null {
     {recipes.length === 0 ? (
       <p class="hint category-empty">No Recipes here yet — check back soon.</p>
     ) : (
-      <div class="g3">
-        {recipes.map((recipe) => {
-          const tile = placeholderTile(recipe.title);
-          const meta = recipeMeta(recipe);
-          return (
-            <a class="card" href={withBase(`/recipes/${recipe.slug}/`)}>
-              <div class="card-photo" style={`background: ${tile.bg}; color: ${tile.fg}`}>{tile.initial}</div>
-              <div class="card-body">
-                <div class="card-title">{recipe.title}</div>
-                {meta && <div class="hint">{meta}</div>}
-                {recipe.tags.length > 0 && (
-                  <div class="card-tags">
-                    {recipe.tags.map((tag) => <span class="chip">{tag}</span>)}
-                  </div>
-                )}
-              </div>
-            </a>
-          );
-        })}
-      </div>
+      <>
+        {tags.length > 0 && (
+          <div class="tag-filter" role="group" aria-label="Filter by tag" data-tag-filter>
+            <button type="button" class="chip chip-lg chip-on" data-tag-value="" aria-pressed="true">All</button>
+            {tags.map((tag) => (
+              <button type="button" class="chip chip-lg" data-tag-value={tag.slug} aria-pressed="false">{tag.name}</button>
+            ))}
+          </div>
+        )}
+        <div class="g3" data-recipe-grid>
+          {recipes.map((recipe) => <RecipeCard recipe={recipe} />)}
+        </div>
+        {tags.length > 0 && (
+          <p class="hint category-filter-empty" data-filter-empty hidden>No Recipes carry this Tag here.</p>
+        )}
+      </>
     )}
   </div>
 </BaseLayout>
@@ -69,15 +58,39 @@ function recipeMeta(recipe: Recipe): string | null {
   .category-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap }
   .category-title { font-size: 44px }
   .category-empty { padding: 48px 0 }
-  .card-photo {
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Young Serif', Georgia, serif;
-    font-size: 80px;
-  }
-  .card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px }
-  .card-title { font-weight: 700; font-size: 19px; line-height: 1.25 }
-  .card-tags { display: flex; gap: 6px; flex-wrap: wrap }
+  .tag-filter { display: flex; flex-wrap: wrap; gap: 8px }
 </style>
+
+<script>
+  // Mechanically mirrors src/lib/tag-filter.ts's filterRecipesByTag against each card's data-tags,
+  // which is tested through the RecipeSource seam; this script only does the DOM show/hide.
+  const filterGroup = document.querySelector<HTMLElement>('[data-tag-filter]');
+  const grid = document.querySelector<HTMLElement>('[data-recipe-grid]');
+  const emptyNotice = document.querySelector<HTMLElement>('[data-filter-empty]');
+
+  if (filterGroup && grid) {
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>('[data-tags]'));
+
+    filterGroup.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-tag-value]');
+      if (!button) return;
+
+      const value = button.dataset.tagValue ?? '';
+      filterGroup.querySelectorAll('button').forEach((btn) => {
+        const on = btn === button;
+        btn.classList.toggle('chip-on', on);
+        btn.setAttribute('aria-pressed', String(on));
+      });
+
+      let visible = 0;
+      cards.forEach((card) => {
+        const cardTags = (card.dataset.tags ?? '').split(' ').filter(Boolean);
+        const show = value === '' || cardTags.includes(value);
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      if (emptyNotice) emptyNotice.hidden = visible > 0;
+    });
+  }
+</script>

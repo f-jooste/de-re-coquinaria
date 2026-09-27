@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import CategoryPage from '../[slug].astro';
 import { makeRecipe } from '../../../lib/testing/recipe-fixture';
 import { InMemoryRecipeSource } from '../../../lib/in-memory-recipe-source';
+import { filterRecipesByTag } from '../../../lib/tag-filter';
 
 // Renders the page against a second, in-memory RecipeSource — the one test seam this milestone
 // establishes — never against a JSON file.
@@ -57,5 +58,47 @@ describe('Category page', () => {
   it('links a Recipe card to its own Recipe page', async () => {
     const html = await renderCategory([{ slug: 'chicken-tinga-tacos', categories: ['dinner'] }]);
     expect(html).toMatch(/<a class="card" href="[^"]*\/recipes\/chicken-tinga-tacos\/"/);
+  });
+
+  it('shows a Tag filter chip for every distinct Tag its Recipes carry, plus an All chip active by default', async () => {
+    const html = await renderCategory([
+      { slug: 'a', categories: ['dinner'], tags: ['mexican', 'weeknight'] },
+      { slug: 'b', categories: ['dinner'], tags: ['mexican'] },
+    ]);
+    expect(html).toMatch(/data-tag-value=""[^>]*aria-pressed="true"[^>]*>All</);
+    expect(html).toMatch(/data-tag-value="mexican"[^>]*>Mexican</);
+    expect(html).toMatch(/data-tag-value="weeknight"[^>]*>Weeknight</);
+  });
+
+  it('collapses differently-cased Tags into one filter chip', async () => {
+    const html = await renderCategory([
+      { slug: 'a', categories: ['dinner'], tags: ['Mexican'] },
+      { slug: 'b', categories: ['dinner'], tags: ['mexican'] },
+    ]);
+    expect(html.match(/data-tag-value="mexican"/g)).toHaveLength(1);
+  });
+
+  it("tags each Recipe card with its canonical Tag Slugs, for the client-side filter to key on", async () => {
+    const html = await renderCategory([{ slug: 'a', categories: ['dinner'], tags: ['Mexican', 'weeknight'] }]);
+    expect(html).toMatch(/data-tags="mexican weeknight"/);
+  });
+
+  it('shows no Tag filter group when its Recipes carry no Tags', async () => {
+    const html = await renderCategory([{ slug: 'a', categories: ['dinner'], tags: [] }]);
+    expect(html).not.toMatch(/data-tag-filter/);
+  });
+
+  it("gives each card the same canonical Tag Slugs filterRecipesByTag selects on, so the client-side filter narrows to exactly what that tested rule would", async () => {
+    const overrides = [
+      { slug: 'a', categories: ['dinner'], tags: ['Mexican'] },
+      { slug: 'b', categories: ['dinner'], tags: ['weeknight'] },
+    ];
+    const html = await renderCategory(overrides);
+    const recipes = overrides.map((o) => makeRecipe(o));
+    const selected = new Set(filterRecipesByTag(recipes, 'mexican').map((r) => r.slug));
+    for (const recipe of recipes) {
+      const card = html.match(new RegExp(`<a class="card" href="[^"]*/recipes/${recipe.slug}/"[^>]*>`))?.[0] ?? '';
+      expect(card.includes('data-tags="mexican"')).toBe(selected.has(recipe.slug));
+    }
   });
 });

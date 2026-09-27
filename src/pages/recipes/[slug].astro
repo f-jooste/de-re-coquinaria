@@ -6,6 +6,7 @@ import { withBase } from '../../lib/base-path';
 import { placeholderTile } from '../../lib/placeholder-tile';
 import { parseIngredientLines } from '../../lib/ingredient-lines';
 import { buildRecipeRoutes } from '../../lib/recipe-routes';
+import { tagSlug, tagDisplayName } from '../../lib/tags';
 import type { Recipe } from '../../lib/recipe-source';
 
 export function getStaticPaths() {
@@ -64,7 +65,7 @@ const hasTimesOrServings = recipe.prepMinutes !== null || recipe.cookMinutes !==
               <>
                 <span class="hint recipe-taxonomy-label recipe-taxonomy-label-tags">Tags</span>
                 {recipe.tags.map((tag) => (
-                  <a class="chip chip-lg" href={withBase(`/tags/${tag}/`)}>{tag}</a>
+                  <a class="chip chip-lg" href={withBase(`/tags/${tagSlug(tag)}/`)}>{tagDisplayName(tag)}</a>
                 ))}
               </>
             )}
