@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { recipeSource } from '../../lib/recipe-source-instance';
+import { buildCategoryRoutes } from '../../lib/category-routes';
+import { withBase } from '../../lib/base-path';
+import { placeholderTile } from '../../lib/placeholder-tile';
+import type { CategoryWithCount, Recipe } from '../../lib/recipe-source';
+
+export function getStaticPaths() {
+  return buildCategoryRoutes(recipeSource);
+}
+
+interface Props {
+  category: CategoryWithCount;
+  recipes: Recipe[];
+}
+
+const { category, recipes } = Astro.props;
+
+// The design file's card meta line: prep/cook time and servings, omitted entirely when none are recorded.
+function recipeMeta(recipe: Recipe): string | null {
+  const parts: string[] = [];
+  if (recipe.prepMinutes !== null) parts.push(`${recipe.prepMinutes} min prep`);
+  if (recipe.cookMinutes !== null) parts.push(`${recipe.cookMinutes} min cook`);
+  if (recipe.servings !== null) parts.push(`Serves ${recipe.servings}`);
+  return parts.length > 0 ? parts.join(' · ') : null;
+}
+---
+
+<BaseLayout title={`${category.name} · De Re Coquinaria`}>
+  <div class="wrap category-page">
+    <nav aria-label="Breadcrumb" class="hint">
+      <a href={withBase('/')}>Home</a> / {category.name}
+    </nav>
+    <div class="category-header">
+      <h1 class="category-title">{category.name}</h1>
+      <span class="hint">{category.count} recipes · newest first</span>
+    </div>
+
+    {recipes.length === 0 ? (
+      <p class="hint category-empty">No Recipes here yet — check back soon.</p>
+    ) : (
+      <div class="g3">
+        {recipes.map((recipe) => {
+          const tile = placeholderTile(recipe.title);
+          const meta = recipeMeta(recipe);
+          return (
+            <a class="card" href={withBase(`/recipes/${recipe.slug}/`)}>
+              <div class="card-photo" style={`background: ${tile.bg}; color: ${tile.fg}`}>{tile.initial}</div>
+              <div class="card-body">
+                <div class="card-title">{recipe.title}</div>
+                {meta && <div class="hint">{meta}</div>}
+                {recipe.tags.length > 0 && (
+                  <div class="card-tags">
+                    {recipe.tags.map((tag) => <span class="chip">{tag}</span>)}
+                  </div>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .category-page { padding: 64px 0; display: flex; flex-direction: column; gap: 24px }
+  .category-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap }
+  .category-title { font-size: 44px }
+  .category-empty { padding: 48px 0 }
+  .card-photo {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Young Serif', Georgia, serif;
+    font-size: 80px;
+  }
+  .card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px }
+  .card-title { font-weight: 700; font-size: 19px; line-height: 1.25 }
+  .card-tags { display: flex; gap: 6px; flex-wrap: wrap }
+</style>

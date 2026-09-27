@@ -21,6 +21,7 @@ export interface CategoryWithCount {
   slug: string;
   name: string;
   order: number;
+  tileBg: string;
   count: number;
 }
 

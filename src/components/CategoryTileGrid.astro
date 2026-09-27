@@ -1,0 +1,27 @@
+---
+import { withBase } from '../lib/base-path';
+import type { CategoryWithCount } from '../lib/recipe-source';
+
+interface Props {
+  categories: CategoryWithCount[];
+}
+
+const { categories } = Astro.props;
+---
+
+<div class="g6">
+  {categories.map((category) => (
+    <a class="tile" href={withBase(`/categories/${category.slug}/`)} style={`background: ${category.tileBg}`}>
+      <span class="tile-name">{category.name}</span>
+      <span class="tile-count">
+        <span>{category.count} recipes</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .tile-name { font-family: 'Young Serif', Georgia, serif; font-size: 26px; line-height: 1.15 }
+  .tile-count { display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 500 }
+</style>
