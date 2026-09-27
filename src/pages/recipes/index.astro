@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import { withBase } from '../../lib/base-path';
+import { recipeSource } from '../../lib/recipe-source-instance';
+import type { Recipe } from '../../lib/recipe-source';
+
+interface Props {
+  recipes?: Recipe[];
+}
+
+const { recipes = recipeSource.getAllRecipes() } = Astro.props;
+---
+
+<BaseLayout title="All recipes · De Re Coquinaria">
+  <div class="wrap all-recipes-page">
+    <nav aria-label="Breadcrumb" class="hint">
+      <a href={withBase('/')}>Home</a> / All recipes
+    </nav>
+    <div class="all-recipes-header">
+      <h1 class="all-recipes-title">All recipes</h1>
+      <span class="hint">{recipes.length} recipes · newest first</span>
+    </div>
+
+    {recipes.length === 0 ? (
+      <p class="hint all-recipes-empty">No Recipes here yet — check back soon.</p>
+    ) : (
+      <div class="g3">
+        {recipes.map((recipe) => <RecipeCard recipe={recipe} showCategories />)}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .all-recipes-page { padding: 64px 0; display: flex; flex-direction: column; gap: 24px }
+  .all-recipes-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap }
+  .all-recipes-title { font-size: 44px }
+  .all-recipes-empty { padding: 48px 0 }
+</style>

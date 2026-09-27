@@ -1,18 +1,66 @@
 ---
-import ToolchainCheck from '../components/ToolchainCheck';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryTileGrid from '../components/CategoryTileGrid.astro';
+import RecipeCard from '../components/RecipeCard.astro';
+import SearchBox from '../components/SearchBox.astro';
 import { withBase } from '../lib/base-path';
+import { recipeSource } from '../lib/recipe-source-instance';
+import type { CategoryWithCount, Recipe } from '../lib/recipe-source';
+
+// How many Recipes the recent strip shows; six real Recipes today so this rarely bites,
+// revisit once there are enough Recipes to make the cap itself visible.
+const RECENT_STRIP_COUNT = 8;
+
+interface Props {
+  categories?: CategoryWithCount[];
+  recipes?: Recipe[];
+}
+
+const {
+  categories = recipeSource.getCategoriesWithCounts(),
+  recipes = recipeSource.getAllRecipes(),
+} = Astro.props;
+
+const recentRecipes = recipes.slice(0, RECENT_STRIP_COUNT);
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>De Re Coquinaria</title>
-  </head>
-  <body>
-    <h1>De Re Coquinaria</h1>
-    <p>Walking skeleton: this page exists to prove commit-to-browser deploy works.</p>
-    <p><a href={withBase('/')}>Link to itself, generated through the base-path helper</a></p>
-    <ToolchainCheck client:load />
-  </body>
-</html>
+<BaseLayout title="De Re Coquinaria">
+  <section class="home-hero">
+    <div class="wrap home-hero-inner">
+      <p class="eyebrow">Only the recipes we actually cook</p>
+      <h1 class="h-hero">What are we cooking tonight?</h1>
+      <SearchBox />
+    </div>
+  </section>
+
+  <section id="categories" class="home-section">
+    <div class="wrap home-section-inner">
+      <h2 class="home-section-title">Browse by occasion</h2>
+      <CategoryTileGrid categories={categories} />
+    </div>
+  </section>
+
+  <section class="home-section">
+    <div class="wrap home-recent-header">
+      <h2 class="home-section-title">Recently added</h2>
+      <a class="btn btn-ghost" href={withBase('/recipes/')}>All recipes</a>
+    </div>
+    {recentRecipes.length === 0 ? (
+      <p class="hint home-recent-empty wrap">No Recipes here yet — check back soon.</p>
+    ) : (
+      <div class="strip">
+        {recentRecipes.map((recipe) => <RecipeCard recipe={recipe} />)}
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .home-hero { padding: 72px 0 40px }
+  .home-hero-inner { display: flex; flex-direction: column; gap: 28px; max-width: 880px }
+  .home-section { padding: 24px 0 40px }
+  .home-section-inner { display: flex; flex-direction: column; gap: 20px }
+  .home-section-title { font-size: 30px }
+  .home-recent-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 16px }
+  .home-recent-empty { padding: 24px 0 }
+</style>

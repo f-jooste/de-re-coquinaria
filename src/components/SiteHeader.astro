@@ -1,0 +1,36 @@
+---
+import { withBase } from '../lib/base-path';
+---
+
+<header class="site-header">
+  <div class="wrap site-header-row">
+    <a class="site-logo" href={withBase('/')}>
+      <span class="site-logo-mark">D</span>
+      <span class="site-logo-name">De Re Coquinaria</span>
+    </a>
+    <nav aria-label="Main" class="site-nav">
+      <a class="btn btn-ghost" href={withBase('/recipes/')}>All recipes</a>
+      <a class="btn btn-ghost" href={`${withBase('/')}#categories`}>Categories</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { border-bottom: 1px solid var(--color-border) }
+  .site-header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px }
+  .site-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--color-ink) }
+  .site-logo-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    font-family: 'Young Serif', Georgia, serif;
+    font-size: 20px;
+  }
+  .site-logo-name { font-family: 'Young Serif', Georgia, serif; font-size: 22px }
+  .site-nav { display: flex; align-items: center; gap: 4px }
+</style>
