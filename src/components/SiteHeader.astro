@@ -32,5 +32,10 @@ import { withBase } from '../lib/base-path';
     font-size: 20px;
   }
   .site-logo-name { font-family: 'Young Serif', Georgia, serif; font-size: 22px }
-  .site-nav { display: flex; align-items: center; gap: 4px }
+  .site-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap }
+
+  /* Below ~550px the logo and nav have no shrink room left; wrap the nav onto its own row rather than overflowing. */
+  @media (max-width: 600px) {
+    .site-header-row { flex-wrap: wrap; row-gap: 8px; padding: 12px 0 }
+  }
 </style>
