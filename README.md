@@ -1,6 +1,7 @@
 # De Re Coquinaria
 
 On the subject of cooking.
+
 A recipe site for me and my girlfriend, created to solve the age-old question of "What's for dinner".
 Tailored to our taste buds.
 
