@@ -1,15 +1,15 @@
-import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 import IndexPage from '../index.astro';
 import { makeRecipe } from '../../lib/testing/recipe-fixture';
 import { InMemoryRecipeSource } from '../../lib/in-memory-recipe-source';
+import { createContainer } from '../../lib/testing/astro-container';
 
 // Renders the page against a second, in-memory RecipeSource — the one test seam this milestone
 // establishes — never against a JSON file.
 
 async function renderHome(overridesList: Parameters<typeof makeRecipe>[0][]) {
   const source = new InMemoryRecipeSource(overridesList.map((overrides) => makeRecipe(overrides)));
-  const container = await AstroContainer.create();
+  const container = await createContainer();
   const html = await container.renderToString(IndexPage, {
     props: { categories: source.getCategoriesWithCounts(), recipes: source.getAllRecipes() },
   });
@@ -25,7 +25,7 @@ describe('Home page', () => {
     expect(positions).toEqual([...positions].sort((a, b) => a - b));
   });
 
-  it('shows the search box in its designed position, inert for now', async () => {
+  it('shows the search box in its designed position', async () => {
     const html = await renderHome([]);
     expect(html).toMatch(/<input id="q" class="input search-input"[^>]*type="search"/);
   });

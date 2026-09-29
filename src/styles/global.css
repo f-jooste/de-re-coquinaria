@@ -78,6 +78,22 @@ ul.ing li.ing-h:first-child { padding-top: 0 }
   ol.steps li { font-size: 19px }
 }
 
+.search-box { display: flex; flex-direction: column; gap: 10px; position: relative }
+.search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0) }
+.search-field { position: relative; display: flex; align-items: center }
+.search-icon { position: absolute; left: 20px; color: var(--color-muted) }
+.search-input { min-height: 68px; border-radius: 999px; padding: 0 24px 0 58px; font-size: 20px; border-width: 2px; border-color: var(--color-ink) }
+.search-results { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 20px; overflow: hidden }
+.search-results-label { padding: 12px 20px; border-bottom: 1px solid var(--color-border) }
+.search-result { display: flex; align-items: center; gap: 16px; padding: 12px 20px; min-height: 64px; text-decoration: none; color: var(--color-ink); border-bottom: 1px solid #F0E8D8; box-sizing: border-box }
+.search-result:last-child { border-bottom: 0 }
+.search-result:hover { color: var(--color-ink); background: var(--color-chip) }
+.search-result-tile { width: 44px; height: 44px; border-radius: 10px; flex: 0 0 44px; display: flex; align-items: center; justify-content: center; font-family: 'Young Serif', Georgia, serif; font-size: 22px }
+.search-result-body { display: flex; flex-direction: column; flex-grow: 1; min-width: 0 }
+.search-result-title { font-weight: 600; font-size: 18px }
+.search-empty { background: var(--color-surface); border: 1px dashed #B9AA92; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 6px }
+.search-empty-title { font-family: 'Young Serif', Georgia, serif; font-size: 22px }
+
 /* Added breakpoint: below ~420px "Snacks & sides" needs a one-column grid and smaller tile type. */
 @media (max-width: 420px) {
   .g3 { grid-template-columns: minmax(0, 1fr) }

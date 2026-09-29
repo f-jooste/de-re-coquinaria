@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CategoryTileGrid from '../components/CategoryTileGrid.astro';
 import SearchBox from '../components/SearchBox.astro';
 import { recipeSource } from '../lib/recipe-source-instance';
-import type { CategoryWithCount } from '../lib/recipe-source';
+import type { CategoryWithCount, Recipe } from '../lib/recipe-source';
 
 // A genuine not-found: no attempt to resolve the path against anything. The client-side
 // Slug resolution in ADR 0001 belongs to the authentication milestone, and there is nothing
@@ -11,9 +11,13 @@ import type { CategoryWithCount } from '../lib/recipe-source';
 
 interface Props {
   categories?: CategoryWithCount[];
+  recipes?: Recipe[];
 }
 
-const { categories = recipeSource.getCategoriesWithCounts() } = Astro.props;
+const {
+  categories = recipeSource.getCategoriesWithCounts(),
+  recipes = recipeSource.getAllRecipes(),
+} = Astro.props;
 ---
 
 <BaseLayout title="Page not found · De Re Coquinaria">
@@ -22,7 +26,7 @@ const { categories = recipeSource.getCategoriesWithCounts() } = Astro.props;
       <p class="not-found-code">404</p>
       <h1 class="not-found-title">We can't find that page</h1>
       <p class="hint not-found-hint">It may have moved or never existed. Try a search or one of the categories.</p>
-      <SearchBox />
+      <SearchBox recipes={recipes} />
     </div>
 
     <div class="not-found-categories">

@@ -29,7 +29,7 @@ const recentRecipes = recipes.slice(0, RECENT_STRIP_COUNT);
     <div class="wrap home-hero-inner">
       <p class="eyebrow">Only the recipes we actually cook</p>
       <h1 class="h-hero">What are we cooking tonight?</h1>
-      <SearchBox />
+      <SearchBox recipes={recipes} />
     </div>
   </section>
 

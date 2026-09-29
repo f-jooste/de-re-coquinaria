@@ -1,30 +1,12 @@
 ---
-// Static and inert until ticket 07 wires it to the live, typo-tolerant search island.
+import SearchIsland from './SearchIsland';
+import type { Recipe } from '../lib/recipe-source';
+
+interface Props {
+  recipes: Recipe[];
+}
+
+const { recipes } = Astro.props;
 ---
 
-<div class="search-box">
-  <label for="q" class="search-label">Search recipes</label>
-  <div class="search-field">
-    <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="7"></circle>
-      <path d="m20 20-3.5-3.5"></path>
-    </svg>
-    <input id="q" class="input search-input" type="search" autocomplete="off" placeholder="Search by title, ingredient or tag" />
-  </div>
-  <p class="hint">Typos are forgiven. Results appear as you type.</p>
-</div>
-
-<style>
-  .search-box { display: flex; flex-direction: column; gap: 10px }
-  .search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0) }
-  .search-field { position: relative; display: flex; align-items: center }
-  .search-icon { position: absolute; left: 20px; color: var(--color-muted) }
-  .search-input {
-    min-height: 68px;
-    border-radius: 999px;
-    padding: 0 24px 0 58px;
-    font-size: 20px;
-    border-width: 2px;
-    border-color: var(--color-ink);
-  }
-</style>
+<SearchIsland client:load recipes={recipes} />
