@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RecipeCard from '../../components/RecipeCard.astro';
-import { recipeSource } from '../../lib/recipe-source-instance';
+import { getRecipeSource } from '../../lib/recipe-source-instance';
 import { buildCategoryRoutes } from '../../lib/category-routes';
 import { withBase } from '../../lib/base-path';
 import { distinctTags } from '../../lib/tags';
 import type { CategoryWithCount, Recipe } from '../../lib/recipe-source';
 
-export function getStaticPaths() {
-  return buildCategoryRoutes(recipeSource);
+export async function getStaticPaths() {
+  return buildCategoryRoutes(await getRecipeSource());
 }
 
 interface Props {

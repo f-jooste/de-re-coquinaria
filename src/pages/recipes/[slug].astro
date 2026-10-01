@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { recipeSource } from '../../lib/recipe-source-instance';
+import { getRecipeSource } from '../../lib/recipe-source-instance';
 import { CATEGORIES, categoryName } from '../../lib/categories';
 import { withBase } from '../../lib/base-path';
 import { placeholderTile } from '../../lib/placeholder-tile';
@@ -9,8 +9,8 @@ import { buildRecipeRoutes } from '../../lib/recipe-routes';
 import { tagSlug, tagDisplayName } from '../../lib/tags';
 import type { Recipe } from '../../lib/recipe-source';
 
-export function getStaticPaths() {
-  return buildRecipeRoutes(recipeSource);
+export async function getStaticPaths() {
+  return buildRecipeRoutes(await getRecipeSource());
 }
 
 interface Props {

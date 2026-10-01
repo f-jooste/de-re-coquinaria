@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RecipeCard from '../../components/RecipeCard.astro';
-import { recipeSource } from '../../lib/recipe-source-instance';
+import { getRecipeSource } from '../../lib/recipe-source-instance';
 import { buildTagRoutes } from '../../lib/tag-routes';
 import { withBase } from '../../lib/base-path';
 import type { Recipe } from '../../lib/recipe-source';
 import type { TagWithName } from '../../lib/tags';
 
-export function getStaticPaths() {
-  return buildTagRoutes(recipeSource);
+export async function getStaticPaths() {
+  return buildTagRoutes(await getRecipeSource());
 }
 
 interface Props {

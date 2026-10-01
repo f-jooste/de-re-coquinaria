@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CategoryTileGrid from '../components/CategoryTileGrid.astro';
 import SearchBox from '../components/SearchBox.astro';
-import { recipeSource } from '../lib/recipe-source-instance';
+import { getRecipeSource } from '../lib/recipe-source-instance';
 import type { CategoryWithCount, Recipe } from '../lib/recipe-source';
 
 // A genuine not-found: no attempt to resolve the path against anything. The client-side
@@ -14,10 +14,9 @@ interface Props {
   recipes?: Recipe[];
 }
 
-const {
-  categories = recipeSource.getCategoriesWithCounts(),
-  recipes = recipeSource.getAllRecipes(),
-} = Astro.props;
+let { categories, recipes } = Astro.props;
+categories ??= (await getRecipeSource()).getCategoriesWithCounts();
+recipes ??= (await getRecipeSource()).getAllRecipes();
 ---
 
 <BaseLayout title="Page not found · De Re Coquinaria">

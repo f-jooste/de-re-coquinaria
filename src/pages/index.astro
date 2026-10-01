@@ -4,7 +4,7 @@ import CategoryTileGrid from '../components/CategoryTileGrid.astro';
 import RecipeCard from '../components/RecipeCard.astro';
 import SearchBox from '../components/SearchBox.astro';
 import { withBase } from '../lib/base-path';
-import { recipeSource } from '../lib/recipe-source-instance';
+import { getRecipeSource } from '../lib/recipe-source-instance';
 import type { CategoryWithCount, Recipe } from '../lib/recipe-source';
 
 // How many Recipes the recent strip shows; six real Recipes today so this rarely bites,
@@ -16,10 +16,9 @@ interface Props {
   recipes?: Recipe[];
 }
 
-const {
-  categories = recipeSource.getCategoriesWithCounts(),
-  recipes = recipeSource.getAllRecipes(),
-} = Astro.props;
+let { categories, recipes } = Astro.props;
+categories ??= (await getRecipeSource()).getCategoriesWithCounts();
+recipes ??= (await getRecipeSource()).getAllRecipes();
 
 const recentRecipes = recipes.slice(0, RECENT_STRIP_COUNT);
 ---

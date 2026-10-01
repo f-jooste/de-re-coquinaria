@@ -2,14 +2,15 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RecipeCard from '../../components/RecipeCard.astro';
 import { withBase } from '../../lib/base-path';
-import { recipeSource } from '../../lib/recipe-source-instance';
+import { getRecipeSource } from '../../lib/recipe-source-instance';
 import type { Recipe } from '../../lib/recipe-source';
 
 interface Props {
   recipes?: Recipe[];
 }
 
-const { recipes = recipeSource.getAllRecipes() } = Astro.props;
+let { recipes } = Astro.props;
+recipes ??= (await getRecipeSource()).getAllRecipes();
 ---
 
 <BaseLayout title="All recipes · De Re Coquinaria">
