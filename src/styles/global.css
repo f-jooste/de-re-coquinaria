@@ -49,7 +49,7 @@ textarea.input { padding: 12px 14px; line-height: 1.55; resize: vertical }
 .badge-draft { display: inline-flex; align-items: center; background: #F3DFA0; color: #4D3A00; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px }
 .badge-arch { display: inline-flex; align-items: center; background: #DDD6C8; color: #3B342C; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px }
 .g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px }
-.g6 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.g-fit { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 16px }
 .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px }
 .hero-recipe { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start }
 .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px }
@@ -71,7 +71,7 @@ ul.ing li.ing-h:first-child { padding-top: 0 }
   .strip { padding: 4px 16px 16px }
   .h-hero { font-size: 38px }
   .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
-  .g6 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+  .g-fit { gap: 12px }
   .two { grid-template-columns: minmax(0, 1fr) }
   .split { grid-template-columns: minmax(0, 1fr); gap: 32px }
   .hero-recipe { grid-template-columns: minmax(0, 1fr); gap: 24px }
@@ -97,7 +97,6 @@ ul.ing li.ing-h:first-child { padding-top: 0 }
 /* Added breakpoint: below ~420px "Snacks & sides" needs a one-column grid and smaller tile type. */
 @media (max-width: 420px) {
   .g3 { grid-template-columns: minmax(0, 1fr) }
-  .g6 { grid-template-columns: minmax(0, 1fr) }
   .tile { min-height: 108px; padding: 16px }
   .tile > span:first-child { font-size: 21px }
   .h-hero { font-size: 32px }

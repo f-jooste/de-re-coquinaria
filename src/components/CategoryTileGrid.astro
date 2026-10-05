@@ -9,7 +9,7 @@ interface Props {
 const { categories } = Astro.props;
 ---
 
-<div class="g6">
+<div class="g-fit">
   {categories.map((category) => (
     <a class="tile" href={withBase(`/categories/${category.slug}/`)} style={`background: ${category.tileBg}`}>
       <span class="tile-name">{category.name}</span>
