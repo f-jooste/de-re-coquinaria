@@ -1,10 +1,13 @@
-import type { Recipe, RecipeSource, CategoryWithCount } from './recipe-source';
+import type { Recipe, RecipeSource, CategoryDefinition, CategoryWithCount } from './recipe-source';
 import { sortNewestFirst, categoriesWithCounts } from './recipe-filtering';
 import { tagSlug } from './tags';
 
-// Shared query behaviour for every RecipeSource; subclasses just supply the already-visible Recipes.
+// Shared query behaviour for every RecipeSource; subclasses just supply the already-visible Recipes and the Category set.
 export abstract class RecipeSourceBase implements RecipeSource {
-  protected constructor(protected readonly visible: Recipe[]) {}
+  protected constructor(
+    protected readonly visible: Recipe[],
+    protected readonly categories: readonly CategoryDefinition[],
+  ) {}
 
   getAllRecipes(): Recipe[] {
     return sortNewestFirst(this.visible);
@@ -26,6 +29,6 @@ export abstract class RecipeSourceBase implements RecipeSource {
   }
 
   getCategoriesWithCounts(): CategoryWithCount[] {
-    return categoriesWithCounts(this.visible);
+    return categoriesWithCounts(this.categories, this.visible);
   }
 }

@@ -1,7 +1,7 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 import CategoryPage from '../[slug].astro';
-import { makeRecipe } from '../../../lib/testing/recipe-fixture';
+import { makeRecipe, makeCategories } from '../../../lib/testing/recipe-fixture';
 import { InMemoryRecipeSource } from '../../../lib/in-memory-recipe-source';
 import { filterRecipesByTag } from '../../../lib/tag-filter';
 
@@ -9,7 +9,10 @@ import { filterRecipesByTag } from '../../../lib/tag-filter';
 // establishes — never against a JSON file.
 
 async function renderCategory(overridesList: Parameters<typeof makeRecipe>[0][], categorySlug = 'dinner') {
-  const source = new InMemoryRecipeSource(overridesList.map((overrides) => makeRecipe(overrides)));
+  const source = new InMemoryRecipeSource(
+    overridesList.map((overrides) => makeRecipe(overrides)),
+    makeCategories(),
+  );
   const category = source.getCategoriesWithCounts().find((c) => c.slug === categorySlug)!;
   const recipes = source.getRecipesByCategory(categorySlug);
   const container = await AstroContainer.create();

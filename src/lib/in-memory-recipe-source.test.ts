@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { InMemoryRecipeSource } from './in-memory-recipe-source';
-import { makeRecipe } from './testing/recipe-fixture';
+import { makeRecipe, makeCategories } from './testing/recipe-fixture';
 
 describe('InMemoryRecipeSource', () => {
   it('orders getAllRecipes newest-first', () => {
@@ -54,7 +54,7 @@ describe('InMemoryRecipeSource', () => {
 
   it('returns all six Categories with counts, including a zero count', () => {
     const dinnerRecipe = makeRecipe({ slug: 'dinner-only', categories: ['dinner'] });
-    const source = new InMemoryRecipeSource([dinnerRecipe]);
+    const source = new InMemoryRecipeSource([dinnerRecipe], makeCategories());
     const counts = source.getCategoriesWithCounts();
     expect(counts.map((c) => c.slug)).toEqual([
       'drinks',

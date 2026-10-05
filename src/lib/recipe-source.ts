@@ -17,11 +17,15 @@ export interface Recipe {
   tags: string[];
 }
 
-export interface CategoryWithCount {
+// A Category without a live Recipe count: what a RecipeSource is given.
+export interface CategoryDefinition {
   slug: string;
   name: string;
   order: number;
   tileBg: string;
+}
+
+export interface CategoryWithCount extends CategoryDefinition {
   count: number;
 }
 

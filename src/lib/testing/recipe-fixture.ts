@@ -1,4 +1,5 @@
-import type { Recipe } from '../recipe-source';
+import type { Recipe, CategoryDefinition } from '../recipe-source';
+import { CATEGORIES } from '../categories';
 
 // Builds a well-formed Recipe for tests, so each test only states the fields it cares about.
 export function makeRecipe(overrides: Partial<Recipe> = {}): Recipe {
@@ -20,4 +21,9 @@ export function makeRecipe(overrides: Partial<Recipe> = {}): Recipe {
     tags: [],
     ...overrides,
   };
+}
+
+// The canonical six Categories for tests, or a given set when one not of six is needed.
+export function makeCategories(categories: readonly CategoryDefinition[] = CATEGORIES): CategoryDefinition[] {
+  return [...categories];
 }

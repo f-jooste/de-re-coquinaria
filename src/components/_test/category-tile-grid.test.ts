@@ -2,10 +2,13 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { describe, expect, it } from 'vitest';
 import CategoryTileGrid from '../CategoryTileGrid.astro';
 import { InMemoryRecipeSource } from '../../lib/in-memory-recipe-source';
-import { makeRecipe } from '../../lib/testing/recipe-fixture';
+import { makeRecipe, makeCategories } from '../../lib/testing/recipe-fixture';
 
 async function renderGrid(overridesList: Parameters<typeof makeRecipe>[0][]) {
-  const source = new InMemoryRecipeSource(overridesList.map((overrides) => makeRecipe(overrides)));
+  const source = new InMemoryRecipeSource(
+    overridesList.map((overrides) => makeRecipe(overrides)),
+    makeCategories(),
+  );
   const categories = source.getCategoriesWithCounts();
   const container = await AstroContainer.create();
   return container.renderToString(CategoryTileGrid, { props: { categories } });

@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import NotFoundPage from '../404.astro';
-import { makeRecipe } from '../../lib/testing/recipe-fixture';
+import { makeRecipe, makeCategories } from '../../lib/testing/recipe-fixture';
 import { InMemoryRecipeSource } from '../../lib/in-memory-recipe-source';
 import { createContainer } from '../../lib/testing/astro-container';
 
 async function renderNotFound(overridesList: Parameters<typeof makeRecipe>[0][] = []) {
-  const source = new InMemoryRecipeSource(overridesList.map((overrides) => makeRecipe(overrides)));
+  const source = new InMemoryRecipeSource(
+    overridesList.map((overrides) => makeRecipe(overrides)),
+    makeCategories(),
+  );
   const container = await createContainer();
   const html = await container.renderToString(NotFoundPage, {
     props: { categories: source.getCategoriesWithCounts(), recipes: source.getAllRecipes() },

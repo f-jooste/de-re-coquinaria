@@ -1,5 +1,4 @@
-import type { Recipe, CategoryWithCount } from './recipe-source';
-import { CATEGORIES } from './categories';
+import type { Recipe, CategoryDefinition, CategoryWithCount } from './recipe-source';
 
 // Shared query logic so every RecipeSource implementation filters and orders identically.
 
@@ -13,9 +12,12 @@ export function sortNewestFirst(recipes: Recipe[]): Recipe[] {
   return [...recipes].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-// The six Categories with a live count of the given (already-visible) Recipes.
-export function categoriesWithCounts(visibleRecipes: Recipe[]): CategoryWithCount[] {
-  return CATEGORIES.map((category) => ({
+// The given Categories with a live count of the given (already-visible) Recipes.
+export function categoriesWithCounts(
+  categories: readonly CategoryDefinition[],
+  visibleRecipes: Recipe[],
+): CategoryWithCount[] {
+  return categories.map((category) => ({
     ...category,
     count: visibleRecipes.filter((recipe) => recipe.categories.includes(category.slug)).length,
   }));

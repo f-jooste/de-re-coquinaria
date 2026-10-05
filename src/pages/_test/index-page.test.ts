@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import IndexPage from '../index.astro';
-import { makeRecipe } from '../../lib/testing/recipe-fixture';
+import { makeRecipe, makeCategories } from '../../lib/testing/recipe-fixture';
 import { InMemoryRecipeSource } from '../../lib/in-memory-recipe-source';
 import { createContainer } from '../../lib/testing/astro-container';
 
@@ -8,7 +8,10 @@ import { createContainer } from '../../lib/testing/astro-container';
 // establishes — never against a JSON file.
 
 async function renderHome(overridesList: Parameters<typeof makeRecipe>[0][]) {
-  const source = new InMemoryRecipeSource(overridesList.map((overrides) => makeRecipe(overrides)));
+  const source = new InMemoryRecipeSource(
+    overridesList.map((overrides) => makeRecipe(overrides)),
+    makeCategories(),
+  );
   const container = await createContainer();
   const html = await container.renderToString(IndexPage, {
     props: { categories: source.getCategoriesWithCounts(), recipes: source.getAllRecipes() },

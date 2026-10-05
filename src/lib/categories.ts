@@ -1,11 +1,6 @@
-// The closed, ordered Category set. Single source of truth for the validator and every page.
-export interface CategoryDefinition {
-  slug: string;
-  name: string;
-  order: number;
-  tileBg: string;
-}
+import type { CategoryDefinition } from './recipe-source';
 
+// The closed, ordered Category set. Single source of truth for the validator and every page.
 export const CATEGORIES: readonly CategoryDefinition[] = [
   { slug: 'drinks', name: 'Drinks', order: 0, tileBg: '#D3E3E6' },
   { slug: 'breakfast', name: 'Breakfast', order: 1, tileBg: '#F5E2AE' },

@@ -1,6 +1,7 @@
 import { RecipeSourceBase } from './recipe-source-base';
 import { isVisible } from './recipe-filtering';
 import { parseRecipe, assertUniqueSlugs } from './recipe-validation';
+import { CATEGORIES } from './categories';
 
 // Bundled at build time (not read from disk at runtime) so every Recipe's JSON ships with the build.
 const recipeModules = import.meta.glob('../data/recipes/*.json', { eager: true, import: 'default' }) as Record<
@@ -18,6 +19,6 @@ export class JsonRecipeSource extends RecipeSourceBase {
       })
       .sort((a, b) => a.file.localeCompare(b.file));
     assertUniqueSlugs(entries);
-    super(entries.map((entry) => entry.recipe).filter(isVisible));
+    super(entries.map((entry) => entry.recipe).filter(isVisible), CATEGORIES);
   }
 }
