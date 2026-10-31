@@ -18,7 +18,8 @@ dist/
 # Generated at build time from Supabase (nightly build artefacts)
 public/search-index.json
 
-# Secrets: Supabase URL/anon key, never committed
+# The Supabase URL and anon key are committed plain constants (src/lib/supabase-client.ts), not
+# secrets (RLS makes the anon key publishable, ADR 0001) -- this is for anything else.
 .env
 .env.*
 !.env.example

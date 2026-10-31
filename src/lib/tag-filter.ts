@@ -6,5 +6,5 @@ import { tagSlug } from './tags';
 export function filterRecipesByTag(recipes: Recipe[], tag: string | null): Recipe[] {
   if (!tag) return recipes;
   const canonical = tagSlug(tag);
-  return recipes.filter((recipe) => recipe.tags.some((recipeTag) => tagSlug(recipeTag) === canonical));
+  return recipes.filter((recipe) => recipe.tags.some((recipeTag) => recipeTag.slug === canonical));
 }

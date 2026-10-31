@@ -2,8 +2,7 @@
 import { withBase } from '../lib/base-path';
 import { placeholderTile } from '../lib/placeholder-tile';
 import { recipeMetaLine } from '../lib/recipe-meta';
-import { tagSlug, tagDisplayName } from '../lib/tags';
-import { categoryName } from '../lib/categories';
+import { categoryDisplayName } from '../lib/category-display-name';
 import type { Recipe } from '../lib/recipe-source';
 
 interface Props {
@@ -15,8 +14,8 @@ interface Props {
 const { recipe, showCategories = false } = Astro.props;
 const tile = placeholderTile(recipe.title);
 const meta = recipeMetaLine(recipe);
-const tagSlugs = recipe.tags.map(tagSlug).join(' ');
-const categoryNames = showCategories ? recipe.categories.map(categoryName).filter(Boolean).join(' · ') : null;
+const tagSlugs = recipe.tags.map((tag) => tag.slug).join(' ');
+const categoryNames = showCategories ? recipe.categories.map(categoryDisplayName).join(' · ') : null;
 ---
 
 <a class="card" href={withBase(`/recipes/${recipe.slug}/`)} data-tags={tagSlugs}>
@@ -27,7 +26,7 @@ const categoryNames = showCategories ? recipe.categories.map(categoryName).filte
     {meta && <div class="hint">{meta}</div>}
     {recipe.tags.length > 0 && (
       <div class="card-tags">
-        {recipe.tags.map((tag) => <span class="chip">{tagDisplayName(tag)}</span>)}
+        {recipe.tags.map((tag) => <span class="chip">{tag.name}</span>)}
       </div>
     )}
   </div>

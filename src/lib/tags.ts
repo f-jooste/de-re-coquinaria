@@ -1,9 +1,6 @@
-import type { Recipe } from './recipe-source';
+import type { Recipe, TagWithName } from './recipe-source';
 
-export interface TagWithName {
-  slug: string;
-  name: string;
-}
+export type { TagWithName };
 
 // Canonicalises a Tag string for comparison and for its URL Slug.
 export function tagSlug(tag: string): string {
@@ -21,9 +18,11 @@ export function tagDisplayName(tag: string): string {
 
 // The distinct Tags carried by the given Recipes, alphabetically by canonical Slug.
 export function distinctTags(recipes: Recipe[]): TagWithName[] {
-  const slugs = new Set<string>();
+  const names = new Map<string, string>();
   for (const recipe of recipes) {
-    for (const tag of recipe.tags) slugs.add(tagSlug(tag));
+    for (const tag of recipe.tags) {
+      if (!names.has(tag.slug)) names.set(tag.slug, tag.name);
+    }
   }
-  return [...slugs].sort().map((slug) => ({ slug, name: tagDisplayName(slug) }));
+  return [...names.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([slug, name]) => ({ slug, name }));
 }

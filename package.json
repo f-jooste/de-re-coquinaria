@@ -11,10 +11,12 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
-    "lint": "node scripts/lint-hardcoded-paths.mjs"
+    "lint": "node scripts/lint-hardcoded-paths.mjs",
+    "db:reset": "supabase db reset"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",
+    "@supabase/supabase-js": "^2.118.0",
     "astro": "^7.3.5",
     "fuse.js": "^7.5.0",
     "react": "^19.3.0",
@@ -27,6 +29,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "happy-dom": "^20.14.5",
+    "supabase": "^2.122.0",
     "typescript": "^5.9.3",
     "vitest": "^5.0.2"
   }

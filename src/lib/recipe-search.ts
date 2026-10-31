@@ -18,7 +18,7 @@ export const MATCHED_FIELD_LABEL: Record<MatchedField, string> = { title: 'title
 const FUSE_OPTIONS: IFuseOptions<Recipe> = {
   keys: [
     { name: 'title', weight: 3 },
-    { name: 'tags', weight: 2 },
+    { name: 'tags', weight: 2, getFn: (recipe) => recipe.tags.map((tag) => tag.name) },
     { name: 'ingredients', weight: 1 },
   ],
   includeMatches: true,

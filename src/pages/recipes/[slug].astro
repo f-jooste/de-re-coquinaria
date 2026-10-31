@@ -1,12 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getRecipeSource } from '../../lib/recipe-source-instance';
-import { CATEGORIES, categoryName } from '../../lib/categories';
+import { categoryDisplayName } from '../../lib/category-display-name';
 import { withBase } from '../../lib/base-path';
 import { placeholderTile } from '../../lib/placeholder-tile';
 import { parseIngredientLines } from '../../lib/ingredient-lines';
 import { buildRecipeRoutes } from '../../lib/recipe-routes';
-import { tagSlug, tagDisplayName } from '../../lib/tags';
 import type { Recipe } from '../../lib/recipe-source';
 
 export async function getStaticPaths() {
@@ -19,7 +18,7 @@ interface Props {
 
 const { recipe } = Astro.props;
 
-const breadcrumbCategorySlug = CATEGORIES.find((category) => recipe.categories.includes(category.slug))?.slug;
+const breadcrumbCategorySlug = recipe.categories[0];
 const tile = placeholderTile(recipe.title);
 const ingredientLines = parseIngredientLines(recipe.ingredients);
 const hasTimesOrServings = recipe.prepMinutes !== null || recipe.cookMinutes !== null || recipe.servings !== null;
@@ -35,7 +34,7 @@ const hasTimesOrServings = recipe.prepMinutes !== null || recipe.cookMinutes !==
             {breadcrumbCategorySlug && (
               <>
                 {' / '}
-                <a href={withBase(`/categories/${breadcrumbCategorySlug}/`)}>{categoryName(breadcrumbCategorySlug)}</a>
+                <a href={withBase(`/categories/${breadcrumbCategorySlug}/`)}>{categoryDisplayName(breadcrumbCategorySlug)}</a>
               </>
             )}
             {' / '}{recipe.title}
@@ -59,13 +58,13 @@ const hasTimesOrServings = recipe.prepMinutes !== null || recipe.cookMinutes !==
           <div class="recipe-taxonomy">
             <span class="hint recipe-taxonomy-label">Category</span>
             {recipe.categories.map((slug) => (
-              <a class="chip chip-lg" href={withBase(`/categories/${slug}/`)}>{categoryName(slug)}</a>
+              <a class="chip chip-lg" href={withBase(`/categories/${slug}/`)}>{categoryDisplayName(slug)}</a>
             ))}
             {recipe.tags.length > 0 && (
               <>
                 <span class="hint recipe-taxonomy-label recipe-taxonomy-label-tags">Tags</span>
                 {recipe.tags.map((tag) => (
-                  <a class="chip chip-lg" href={withBase(`/tags/${tagSlug(tag)}/`)}>{tagDisplayName(tag)}</a>
+                  <a class="chip chip-lg" href={withBase(`/tags/${tag.slug}/`)}>{tag.name}</a>
                 ))}
               </>
             )}

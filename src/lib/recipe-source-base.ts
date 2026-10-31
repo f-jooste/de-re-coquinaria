@@ -25,7 +25,7 @@ export abstract class RecipeSourceBase implements RecipeSource {
   // against known Slugs at the data boundary, but Tags are open and freeform, so casing can drift.
   getRecipesByTag(slug: string): Recipe[] {
     const canonical = tagSlug(slug);
-    return sortNewestFirst(this.visible.filter((recipe) => recipe.tags.some((tag) => tagSlug(tag) === canonical)));
+    return sortNewestFirst(this.visible.filter((recipe) => recipe.tags.some((tag) => tag.slug === canonical)));
   }
 
   getCategoriesWithCounts(): CategoryWithCount[] {

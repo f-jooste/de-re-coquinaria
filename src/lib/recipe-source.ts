@@ -1,3 +1,9 @@
+// A Tag as rendered: its canonical Slug alongside the display name stored for it.
+export interface TagWithName {
+  slug: string;
+  name: string;
+}
+
 // The domain shape of a Recipe, carrying every field from docs/schema.sql.
 export interface Recipe {
   slug: string;
@@ -14,7 +20,7 @@ export interface Recipe {
   createdAt: string;
   updatedAt: string;
   categories: string[];
-  tags: string[];
+  tags: TagWithName[];
 }
 
 // A Category without a live Recipe count: what a RecipeSource is given.
