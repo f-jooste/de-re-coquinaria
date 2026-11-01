@@ -5,5 +5,6 @@ import { getViteConfig } from 'astro/config';
 export default getViteConfig({
   test: {
     passWithNoTests: true,
+    exclude: ['**/node_modules/**', 'tests/rls/**'], // RLS suite needs local Supabase; run via test:rls
   },
 });
