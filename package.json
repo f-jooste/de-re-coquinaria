@@ -12,7 +12,8 @@
     "check": "astro check",
     "test": "vitest run",
     "lint": "node scripts/lint-hardcoded-paths.mjs",
-    "db:reset": "supabase db reset"
+    "db:reset": "supabase db reset",
+    "test:rls": "node scripts/rls-env.mjs vitest run --config vitest.rls.config.ts"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",
