@@ -1,16 +1,11 @@
-name: Deploy
+name: CI
 
 on:
   push:
+  pull_request:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -26,9 +21,6 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
 
   # Row-level security suite against a CLI-started local instance; no credentials configured.
   rls:
@@ -42,14 +34,3 @@ jobs:
       - run: npm ci
       - run: npx supabase start -x realtime,storage-api,imgproxy,edge-runtime,logflare,vector,studio,mailpit
       - run: npm run test:rls
-
-  deploy:
-    needs: [build, rls]
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
