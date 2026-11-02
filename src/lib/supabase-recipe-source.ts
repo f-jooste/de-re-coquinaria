@@ -1,5 +1,6 @@
 import { RecipeSourceBase } from './recipe-source-base';
 import { supabase } from './supabase-client';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { tagDisplayName } from './tags';
 import type { CategoryDefinition, Recipe } from './recipe-source';
 
@@ -55,8 +56,9 @@ function toRecipe(row: RecipeRow): Recipe {
   };
 }
 
-async function fetchVisibleRecipes(): Promise<Recipe[]> {
-  const { data, error } = await supabase
+// Guard: an error or null is a failed read and must abort the build; an empty array is a legitimate empty set.
+async function fetchVisibleRecipes(client: SupabaseClient): Promise<Recipe[]> {
+  const { data, error } = await client
     .from('recipes')
     .select(RECIPE_COLUMNS)
     .eq('status', 'published')
@@ -64,17 +66,19 @@ async function fetchVisibleRecipes(): Promise<Recipe[]> {
     .order('created_at', { ascending: false })
     .overrideTypes<RecipeRow[], { merge: false }>();
   if (error) throw new Error(`Supabase: failed to read Recipes: ${error.message}`);
-  return (data ?? []).map(toRecipe);
+  if (data === null) throw new Error('Supabase: Recipes query returned null');
+  return data.map(toRecipe);
 }
 
-async function fetchCategories(): Promise<CategoryDefinition[]> {
-  const { data, error } = await supabase
+async function fetchCategories(client: SupabaseClient): Promise<CategoryDefinition[]> {
+  const { data, error } = await client
     .from('categories')
     .select('slug,name,sort_order,tile_bg')
     .order('sort_order')
     .overrideTypes<CategoryRow[], { merge: false }>();
   if (error) throw new Error(`Supabase: failed to read Categories: ${error.message}`);
-  return (data ?? []).map((row) => ({ slug: row.slug, name: row.name, order: row.sort_order, tileBg: row.tile_bg }));
+  if (data === null) throw new Error('Supabase: Categories query returned null');
+  return data.map((row) => ({ slug: row.slug, name: row.name, order: row.sort_order, tileBg: row.tile_bg }));
 }
 
 // Reads every Published, non-Archived Recipe with its Categories and Tags, and the Category set, from Postgres.
@@ -83,8 +87,8 @@ export class SupabaseRecipeSource extends RecipeSourceBase {
     super(recipes, categories);
   }
 
-  static async create(): Promise<SupabaseRecipeSource> {
-    const [recipes, categories] = await Promise.all([fetchVisibleRecipes(), fetchCategories()]);
+  static async create(client: SupabaseClient = supabase): Promise<SupabaseRecipeSource> {
+    const [recipes, categories] = await Promise.all([fetchVisibleRecipes(client), fetchCategories(client)]);
     return new SupabaseRecipeSource(recipes, categories);
   }
 }
